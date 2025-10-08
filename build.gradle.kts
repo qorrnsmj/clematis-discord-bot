@@ -12,9 +12,9 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.dv8fromtheworld:JDA:5.6.1")
+    implementation("net.dv8tion:JDA:6.0.0")
     implementation("ch.qos.logback:logback-classic:1.5.19")
-    implementation("com.github.Kaktushose:jda-commands:4.0.0-beta.8")
+    implementation("io.github.kaktushose:jda-commands:v3.0.0")
 }
 
 tasks {
