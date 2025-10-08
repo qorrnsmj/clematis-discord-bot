@@ -14,7 +14,7 @@ repositories {
 dependencies {
     implementation("net.dv8tion:JDA:6.0.0")
     implementation("ch.qos.logback:logback-classic:1.5.19")
-    implementation("io.github.kaktushose:jda-commands:v3.0.0")
+    implementation("io.github.kaktushose:jda-commands:v4.0.0-beta.3")
 }
 
 tasks {
