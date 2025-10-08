@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.2.20"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.dv8tion:JDA:6.0.0")
+    implementation("net.dv8tion:JDA:5.6.1")
     implementation("ch.qos.logback:logback-classic:1.5.19")
     implementation("io.github.kaktushose:jda-commands:v4.0.0-beta.3")
 }
