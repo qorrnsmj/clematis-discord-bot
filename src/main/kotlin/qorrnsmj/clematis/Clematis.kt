@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.requests.GatewayIntent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import qorrnsmj.clematis.listener.VoiceTimeListener
 import java.util.EnumSet
 
 object Clematis {
@@ -22,6 +23,7 @@ object Clematis {
             .setStatus(Properties.BOT_STATUS)
             .setActivity(Properties.BOT_ACTIVITY)
             .enableIntents(EnumSet.allOf(GatewayIntent::class.java))
+            .addEventListeners(VoiceTimeListener())
             .build()
 
         jda.awaitReady()
