@@ -11,8 +11,6 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle
 import qorrnsmj.clematis.Clematis.guild
 import qorrnsmj.clematis.listener.VoiceTimeManager
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 @Interaction
@@ -86,7 +84,6 @@ class VoiceTimeCommand {
         return EmbedBuilder()
             .setTitle(title)
             .setDescription(desc.ifEmpty { "No data yet." })
-            .setFooter("[Last updated] ${LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyy.MM.dd hh:mm"))}")
             .setColor(0xF1C40F)
     }
 
