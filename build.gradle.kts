@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "qorrnsmj"
-version = "1.0.0"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
@@ -13,8 +13,10 @@ repositories {
 
 dependencies {
     implementation("net.dv8tion:JDA:5.6.1")
-    implementation("ch.qos.logback:logback-classic:1.5.19")
     implementation("io.github.kaktushose:jda-commands:v4.0.0-beta.3")
+
+    implementation("ch.qos.logback:logback-classic:1.5.19")
+    implementation("com.google.code.gson:gson:2.13.2")
 }
 
 tasks {
