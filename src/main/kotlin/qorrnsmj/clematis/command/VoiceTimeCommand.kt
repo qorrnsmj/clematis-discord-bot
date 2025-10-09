@@ -66,8 +66,8 @@ class VoiceTimeCommand {
             val userName = if (exists) "<@$userId>" else "Unknown"
             val emoji = when (i) {
                 0 -> ":first_place:"
-                1 -> "second_place:"
-                2 -> "third_place:"
+                1 -> ":second_place:"
+                2 -> ":third_place:"
                 3 -> ":four:"
                 4 -> ":five:"
                 5 -> ":six:"
