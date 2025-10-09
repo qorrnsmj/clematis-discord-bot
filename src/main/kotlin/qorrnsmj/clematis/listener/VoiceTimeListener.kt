@@ -11,20 +11,20 @@ class VoiceTimeListener : ListenerAdapter() {
         // joined channel
         if (event.channelJoined != null && event.channelLeft == null) {
             VoiceTimeManager.onJoin(member.idLong)
-            logger.info("${member.effectiveName} joined ${event.channelJoined?.name}")
+            logger.info("${member.effectiveName} joined \"${event.channelJoined?.name}\"")
         }
 
         // left channel
         if (event.channelLeft != null && event.channelJoined == null) {
             VoiceTimeManager.onLeave(member.idLong)
-            logger.info("${member.effectiveName} left ${event.channelLeft?.name}")
+            logger.info("${member.effectiveName} left \"${event.channelLeft?.name}\"")
         }
 
         // moved between channels
         if (event.channelJoined != null && event.channelLeft != null) {
             VoiceTimeManager.onLeave(member.idLong)
             VoiceTimeManager.onJoin(member.idLong)
-            logger.info("${member.effectiveName} moved from ${event.channelLeft?.name} to ${event.channelJoined?.name}")
+            logger.info("${member.effectiveName} moved from \"${event.channelLeft?.name}\" to \"${event.channelJoined?.name}\"")
         }
     }
 }
