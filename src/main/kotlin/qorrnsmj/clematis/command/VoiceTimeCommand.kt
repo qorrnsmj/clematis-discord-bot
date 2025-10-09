@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle
 import qorrnsmj.clematis.Clematis.guild
 import qorrnsmj.clematis.listener.VoiceTimeManager
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 @Interaction
@@ -62,13 +64,29 @@ class VoiceTimeCommand {
 
     private fun buildRankingEmbed(title: String, ranking: List<Pair<Long, Long>>): EmbedBuilder {
         val desc = ranking.mapIndexed { i, (userId, time) ->
-            val name = guild.getMemberById(userId)?.effectiveName ?: "Unknown"
-            "${i + 1}. **$name** — ${formatDuration(time)}"
+            val exists = guild.getMemberById(userId) != null
+            val userName = if (exists) "<@$userId>" else "Unknown"
+            val emoji = when (i) {
+                0 -> ":first_place:"
+                1 -> "second_place:"
+                2 -> "third_place:"
+                3 -> ":four:"
+                4 -> ":five:"
+                5 -> ":six:"
+                6 -> ":seven:"
+                7 -> ":eight:"
+                8 -> ":nine:"
+                9 -> ":keycap_ten:"
+                else -> "${i + 1}. "
+            }
+
+            "$emoji $userName ${formatDuration(time)}"
         }.joinToString("\n")
 
         return EmbedBuilder()
             .setTitle(title)
             .setDescription(desc.ifEmpty { "No data yet." })
+            .setFooter("[Last updated] ${LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyy.MM.dd hh:mm"))}")
             .setColor(0xF1C40F)
     }
 
