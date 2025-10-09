@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.OnlineStatus
 import net.dv8tion.jda.api.entities.Activity
 import java.io.File
 import java.io.FileInputStream
-import java.util.Properties
 import kotlin.system.exitProcess
 
 object Properties {
@@ -28,7 +27,7 @@ object Properties {
             exitProcess(1)
         }
 
-        Properties()
+        java.util.Properties()
             .apply { load(FileInputStream(propertyFile)) }
             .let {
                 TOKEN = it.getProperty("TOKEN", TOKEN)
