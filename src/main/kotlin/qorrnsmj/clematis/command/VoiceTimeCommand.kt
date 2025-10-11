@@ -62,8 +62,8 @@ class VoiceTimeCommand {
 
     private fun buildRankingEmbed(title: String, ranking: List<Pair<Long, Long>>): EmbedBuilder {
         val desc = ranking.mapIndexed { i, (userId, time) ->
-            val exists = guild.getMemberById(userId) != null
-            val userName = if (exists) "<@$userId>" else "Unknown"
+            val member = runCatching { guild.retrieveMemberById(userId).complete() }.getOrNull()
+            val userName = member?.asMention ?: "Unknown"
             val emoji = when (i) {
                 0 -> ":first_place:"
                 1 -> ":second_place:"
