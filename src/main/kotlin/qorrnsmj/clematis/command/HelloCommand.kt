@@ -30,23 +30,29 @@ class HelloCommand {
     }
 
     private fun setDayHello(event: CommandEvent) {
-        if (scheduler != null) {
+        if (scheduler != null && !scheduler!!.isShutdown) {
             event.reply("Already set day-hello!")
                 .delete().queueAfter(5, TimeUnit.SECONDS)
             return
         }
 
-        scheduler = Executors.newScheduledThreadPool(1)
-        scheduler!!.scheduleAtFixedRate({
-            event.messageChannel.sendMessageEmbeds(getMessageEmbed()).queue()
-        }, getInitialDelay(), 24 * 86400, TimeUnit.SECONDS)
+        scheduler = Executors.newSingleThreadScheduledExecutor()
+        scheduleNext(event)
 
         event.reply("Set day-hello!")
             .delete().queueAfter(5, TimeUnit.SECONDS)
     }
 
+    private fun scheduleNext(event: CommandEvent) {
+        val delay = getInitialDelay()
+        scheduler?.schedule({
+            event.messageChannel.sendMessageEmbeds(getMessageEmbed()).queue()
+            scheduleNext(event)
+        }, delay, TimeUnit.SECONDS)
+    }
+
     private fun unsetDayHello(event: CommandEvent) {
-        scheduler?.shutdown()
+        scheduler?.shutdownNow()
         scheduler = null
 
         event.reply("Unset day-hello!")
@@ -54,12 +60,10 @@ class HelloCommand {
     }
 
     private fun getMessageEmbed(): MessageEmbed {
-        // title
         val oCount = Random.nextInt(1, 11)
         val emoji = if (oCount == 1) "<:god:1327940708589371442>" else ":sunny:"
         val title = "$emoji G" + "o".repeat(oCount) + "d Morning!"
 
-        // description
         val today = LocalDate.now()
         val daysPassed = today.dayOfYear
         val progress = (daysPassed / 365f)
@@ -82,31 +86,22 @@ class HelloCommand {
     }
 
     private fun getInitialDelay(): Long {
-        val currentTime = Calendar.getInstance()
-        val currentHour = currentTime.get(Calendar.HOUR_OF_DAY)
-        val currentMinute = currentTime.get(Calendar.MINUTE)
-        val currentSecond = currentTime.get(Calendar.SECOND)
+        val now = Calendar.getInstance()
+        val target = now.clone() as Calendar
+        target.set(Calendar.HOUR_OF_DAY, TARGET_HOUR)
+        target.set(Calendar.MINUTE, 0)
+        target.set(Calendar.SECOND, 0)
+        target.set(Calendar.MILLISECOND, 0)
 
-        var delayHours = TARGET_HOUR - currentHour
-        if (delayHours < 0) {
-            // If the target time has already passed, add 24 hours
-            delayHours += 24
+        if (target.before(now)) {
+            target.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        // Calculate the remaining delay in minutes and seconds
-        val delayMinutes = 60 - currentMinute
-        val delaySeconds = 60 - currentSecond
-
-        // Convert the delay time to seconds and sum them up
-        val delayInSeconds = TimeUnit.HOURS.toSeconds(delayHours.toLong()) +
-                             TimeUnit.MINUTES.toSeconds(delayMinutes.toLong()) +
-                             delaySeconds.toLong()
-
-        return delayInSeconds
+        return (target.timeInMillis - now.timeInMillis) / 1000
     }
 
     companion object {
-        private const val TARGET_HOUR = 6
+        private const val TARGET_HOUR = 7
         private var scheduler: ScheduledExecutorService? = null
     }
 }
