@@ -44,11 +44,10 @@ class HelloCommand {
     }
 
     private fun scheduleNext(event: CommandEvent) {
-        val delay = getInitialDelay()
         scheduler?.schedule({
             event.messageChannel.sendMessageEmbeds(getMessageEmbed()).queue()
             scheduleNext(event)
-        }, delay, TimeUnit.SECONDS)
+        }, getInitialDelay(), TimeUnit.SECONDS)
     }
 
     private fun unsetDayHello(event: CommandEvent) {
@@ -93,11 +92,11 @@ class HelloCommand {
         target.set(Calendar.SECOND, 0)
         target.set(Calendar.MILLISECOND, 0)
 
-        if (target.before(now)) {
+        if (target.timeInMillis - now.timeInMillis <= 0) {
             target.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        return (target.timeInMillis - now.timeInMillis) / 1000
+        return (target.timeInMillis - now.timeInMillis + 999) / 1000
     }
 
     companion object {
